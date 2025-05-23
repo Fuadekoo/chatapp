@@ -1,9 +1,18 @@
+"use client";
+import Image from "next/image";
 import React from "react";
 
 function ChatNavbar() {
   return (
-    <div>
-      <h1>This is a chat navbar</h1>
+    <div className="sticky top-0 flex items-end justify-between p-4 bg-gray-100 ">
+      <div>telegram</div>
+      <Image
+        src="/ai.png"
+        alt="Profile"
+        width={32}
+        height={32}
+        className="rounded-full object-cover"
+      />
     </div>
   );
 }
