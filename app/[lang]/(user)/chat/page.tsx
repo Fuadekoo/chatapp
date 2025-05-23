@@ -5,27 +5,35 @@ import Chat from "./chat";
 import ChatNavbar from "./chatNavbar";
 
 function Page() {
-  const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  const [selectedChat, setSelectedChat] = useState<string | null>("null");
   return (
-    <div className="overflow-hidden">
-      <nav className="overflow-hidden">
+    <div className="overflow-hidden h-screen">
+      <nav className="overflow-hidden flex-shrink-0">
         <ChatNavbar />
       </nav>
-      <main>
-        <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4">
-          <div className={`${selectedChat ? "hidden" : "block"} md:block`}>
+      <main className="flex-1">
+        <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4 h-full">
+          <div
+            className={`${
+              selectedChat ? "hidden" : "block"
+            } md:block h-full overflow-y-auto`}
+          >
             <ChatList onSelectChat={setSelectedChat} />
           </div>
-          <div className={`${selectedChat ? "block" : "hidden"} md:block`}>
+          <div
+            className={`${
+              selectedChat ? "block" : "hidden"
+            } md:block h-full overflow-y-auto`}
+          >
             {/* Show back button on mobile */}
-            <div className="md:hidden mb-2">
+            {/* <div className="md:hidden mb-2">
               <button
                 className="text-blue-500 underline"
                 onClick={() => setSelectedChat(null)}
               >
                 &larr; Back to chats
               </button>
-            </div>
+            </div> */}
             <Chat chatId={selectedChat} />
           </div>
         </div>

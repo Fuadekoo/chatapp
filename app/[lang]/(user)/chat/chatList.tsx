@@ -10,7 +10,7 @@ const sampleChats = [
 
 function ChatList() {
   return (
-    <div className="w-full h-screen bg-gray-100 border-r p-4 flex flex-col overflow-hidden">
+    <div className="w-full h-screen bg-gray-100 border-r p-4 flex flex-col over">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-bold">Chats</h1>
