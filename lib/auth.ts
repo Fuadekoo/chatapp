@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import prisma from "./db";
 import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./zodSchema";
 
@@ -16,11 +17,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid credentials");
         }
         // Implement your own logic to find the user
-        const user = {
-          id: "1",
-          name: "John Doe",
-          email: "johndoe@example.com",
-        };
+        const user = await prisma.user.findUnique({
+          where: {
+            phone: result.data.phone,
+            password: result.data.password,
+          },
+        });
+        if (!user) {
+          console.log("Invalid credentials");
+          throw new Error("Invalid credentials");
+        }
         return user;
       },
     }),

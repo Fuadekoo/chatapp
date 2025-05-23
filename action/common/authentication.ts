@@ -14,6 +14,7 @@ export async function authenticate(
 
     console.log("sign in successfully");
   } catch (error) {
+    console.log("sign in failed", error);
     return "something was wrong";
   }
 

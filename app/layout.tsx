@@ -1,8 +1,9 @@
+// "use client";
 import type { Metadata } from "next";
-import { Providers } from "../provider/providers";
+import { HeroUIProvider } from "@heroui/react";
+// import { Providers } from "../provider/providers";
 import { Geist, Geist_Mono } from "next/font/google";
-// import "./globals.css";
-
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

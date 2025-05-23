@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  phone: z.string().regex(/^\+?[0-9]{10,15}$/, "Invalid phone number"),
+  phone: z.string().min(9, "phone number is too short"),
   password: z.string().min(8),
 });
+export type LoginType = z.infer<typeof loginSchema>;

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/input": "^2.4.19",
     "@heroui/react": "^2.7.8",
     "@hookform/resolvers": "^5.0.1",
     "@prisma/client": "^6.8.2",
