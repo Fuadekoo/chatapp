@@ -7,8 +7,8 @@ import ChatNavbar from "./chatNavbar";
 function Page() {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   return (
-    <div>
-      <nav>
+    <div className="overflow-hidden">
+      <nav className="overflow-hidden">
         <ChatNavbar />
       </nav>
       <main>
