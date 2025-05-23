@@ -14,7 +14,7 @@ function Chat() {
     <div className="h-screen grid grid-rows-2 bg-white rounded-lg shadow-md overflow-hidden">
       <div>
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b bg-blue-50 overflow-hidden">
+        <div className="grid grid-rows-1 items-center justify-between px-4 py-3 border-b bg-blue-50 overflow-hidden">
           <div className="flex items-center gap-3">
             <button className="md:hidden text-blue-500 text-xl font-bold px-2">
               &lt;
@@ -61,7 +61,7 @@ function Chat() {
         </div>
       </div>
       {/* Input */}
-      <div className="flex-1/4">
+      <div className="grid grid-rows-1">
         <ChatWriteCard />
       </div>
     </div>
