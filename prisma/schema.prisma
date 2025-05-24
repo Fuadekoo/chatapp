@@ -14,22 +14,66 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  phone     String   @unique
-  email     String?  @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
+  id                String             @id @default(cuid())
+  name              String?
+  phone             String             @unique
+  email             String?            @unique
+  password          String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  chatsFrom         Chat[]             @relation("FromUser")
+  chatsTo           Chat[]             @relation("ToUser")
+  createdGroups     GroupChat[]        @relation("CreatedGroups")
+  groupChats        GroupChat[]        @relation("GroupMembers")
+  groupChatMessages GroupChatMessage[] @relation("sentToGroup")
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String?
-  content   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String?
+  id               String             @id @default(cuid())
+  title            String?
+  content          String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Chat             Chat[]
+  GroupChatMessage GroupChatMessage[]
+}
+
+model Chat {
+  id         String   @id @default(cuid())
+  from       User     @relation("FromUser", fields: [fromUserId], references: [id], onDelete: Cascade)
+  fromUserId String
+  to         User     @relation("ToUser", fields: [toUserId], references: [id], onDelete: Cascade)
+  toUserId   String
+  msg        String
+  post       Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model GroupChat {
+  id                String             @id @default(cuid())
+  name              String
+  image             String?
+  description       String?
+  isPublic          Boolean            @default(false)
+  members           User[]             @relation("GroupMembers")
+  createdBy         User               @relation("CreatedGroups", fields: [createdById], references: [id], onDelete: Cascade)
+  createdById       String
+  groupChatMessages GroupChatMessage[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model GroupChatMessage {
+  id          String    @id @default(cuid())
+  groupChat   GroupChat @relation(fields: [groupChatId], references: [id], onDelete: Cascade)
+  groupChatId String
+  sender      User      @relation("sentToGroup", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId    String
+  msg         String
+  post        Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
