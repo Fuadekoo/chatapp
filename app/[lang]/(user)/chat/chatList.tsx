@@ -6,15 +6,38 @@ const sampleChats = [
   { id: 2, name: "Srikanth", lastMessage: "Hi Srikanth", time: "10:30 PM" },
   { id: 3, name: "Raju", lastMessage: "", time: "" },
   { id: 4, name: "Varun", lastMessage: "", time: "" },
+  {
+    id: 5,
+    name: "Suresh",
+    lastMessage: "Let's meet tomorrow",
+    time: "09:15 AM",
+  },
+  { id: 6, name: "Anjali", lastMessage: "How are you?", time: "11:00 AM" },
+  { id: 7, name: "Rahul", lastMessage: "", time: "" },
+  { id: 8, name: "Priya", lastMessage: "See you soon!", time: "07:45 PM" },
+  { id: 9, name: "Kiran", lastMessage: "", time: "" },
+  { id: 10, name: "Nisha", lastMessage: "", time: "" },
+  { id: 11, name: "Vikram", lastMessage: "Good morning!", time: "08:00 AM" },
+  { id: 12, name: "Sita", lastMessage: "", time: "" },
+  {
+    id: 13,
+    name: "Gopal",
+    lastMessage: "See you at the party",
+    time: "06:30 PM",
+  },
+  { id: 14, name: "Lakshmi", lastMessage: "", time: "" },
+  { id: 15, name: "Rajesh", lastMessage: "", time: "" },
 ];
 
 function ChatList() {
   return (
-    <div className="w-full h-screen bg-gray-100 border-r p-4 flex flex-col over">
+    <div className="w-full h-screen bg-gray-100 border-r p-2 flex flex-col overflow-y-auto">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-bold">Chats</h1>
-        <button className="p-2 bg-blue-500 text-white rounded">New Chat</button>
+        <button className="p-2 bg-blue-500 text-white rounded hover:bg-pink-500">
+          New Chat
+        </button>
       </div>
 
       {/* Search Box */}
