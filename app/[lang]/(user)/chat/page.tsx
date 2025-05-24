@@ -3,14 +3,24 @@ import React, { useState } from "react";
 import ChatList from "./chatList";
 import Chat from "./chat";
 import ChatNavbar from "./chatNavbar";
+import Profile from "./profile";
+import Drawer from "@/components/drawer";
 
 function Page() {
   const [selectedChat, setSelectedChat] = useState<string | null>("null");
+  const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   return (
     <div className="overflow-hidden h-screen">
       <nav className="overflow-hidden flex-shrink-0">
-        <ChatNavbar />
+        <ChatNavbar onProfileClick={() => setOpenProfileDrawer(true)} />
       </nav>
+      {/* ...rest of your layout... */}
+      <Drawer
+        open={openProfileDrawer}
+        onClose={() => setOpenProfileDrawer(false)}
+      >
+        <Profile />
+      </Drawer>
       <main className="flex-1">
         <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4 h-full">
           <div
