@@ -1,28 +1,47 @@
+"use server";
 import prisma from "@/lib/db";
-import { image } from "@heroui/react";
 
-export async function getUserList() {
-  const userlist = await prisma.user.findMany({
+export async function getUserList(search?: string) {
+  const userList = await prisma.user.findMany({
     where: {
       id: {
         not: "001",
       },
+      ...(search
+        ? {
+            OR: [{ name: { contains: search } }],
+          }
+        : {}),
     },
     select: {
       id: true,
       name: true,
-      email: true,
+      phone: true,
+      socket: true,
       createdAt: true,
     },
   });
-  return userlist;
+  return userList;
 }
 
-export async function getChat(id: string) {
-  const chat = await prisma.chat.findUnique({
-    where: {
-      id,
-    },
-  });
-  return chat;
-}
+// export async function getChat(senderId: string, receiverId: string) {
+//   const chat = await prisma.chat.findMany({
+//     where: {
+//       toUserId: receiverId,
+//       fromUserId: senderId,
+//     },
+//     select: {
+//       id: true,
+//       msg: true,
+//       createdAt: true,
+//       updatedAt: true,
+//       post: {
+//         select: {
+//           content: true,
+//           title: true,
+//         },
+//       },
+//     },
+//   });
+//   return chat;
+// }

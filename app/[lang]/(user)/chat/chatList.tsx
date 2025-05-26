@@ -3,7 +3,11 @@ import React from "react";
 import UserList from "./userList";
 import GroupList from "./groupList";
 
-function ChatList() {
+type ChatListProps = {
+  onSelectChat?: (chatId: string) => void;
+};
+
+function ChatList({ onSelectChat }: ChatListProps) {
   const [activeTab, setActiveTab] = React.useState<"user" | "group">("user");
   const handleTabChange = (tab: "user" | "group") => {
     setActiveTab(tab);
@@ -38,7 +42,11 @@ function ChatList() {
       </div>
       {/* List */}
       <div className="overflow-y-auto">
-        {activeTab === "user" ? <UserList /> : <GroupList />}
+        {activeTab === "user" ? (
+          <UserList onSelectChat={onSelectChat} />
+        ) : (
+          <GroupList onSelectChat={onSelectChat} />
+        )}
       </div>
     </div>
   );

@@ -1,33 +1,43 @@
 import Image from "next/image";
 import ChatWriteCard from "./chatWriteCard";
-import React from "react";
+import React, { useState } from "react";
+import useAction from "@/hooks/useAction";
+import { getChatMessages } from "@/action/chat/chatmessage";  
 
-function Chat() {
-  // Example messages (replace with your messages state/props)
-  const messages = [
-    { id: 1, fromMe: false, text: "Hello! 👋", time: "08:53 AM" },
-    { id: 2, fromMe: true, text: "Hi! How are you?", time: "08:54 AM" },
-    { id: 3, fromMe: false, text: "I'm good, thanks!", time: "08:55 AM" },
-    { id: 4, fromMe: true, text: "What about you?", time: "08:56 AM" },
-    {
-      id: 5,
-      fromMe: false,
-      text: "Doing well! Just working on some projects.",
-      time: "08:57 AM",
-    },
-    {
-      id: 6,
-      fromMe: true,
-      text: "Sounds great! Let me know if you need help.",
-      time: "08:58 AM",
-    },
-    { id: 7, fromMe: false, text: "Will do! Thanks!", time: "08:59 AM" },
-    { id: 8, fromMe: true, text: "Anytime! 😊", time: "09:00 AM" },
-    { id: 9, fromMe: false, text: "Catch you later!", time: "09:01 AM" },
-    { id: 10, fromMe: true, text: "Bye! Take care.", time: "09:02 AM" },
-    { id: 11, fromMe: false, text: "You too! Bye!", time: "09:03 AM" },
-    { id: 12, fromMe: true, text: "See you soon!", time: "09:04 AM" },
-  ];
+
+type ChatProps = {
+  chatId: string | null;
+};
+
+function Chat({ chatId }: ChatProps) {
+  const [messages, setMessages] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // // Example messages (replace with your messages state/props)
+  // const messages = [
+  //   { id: 1, fromMe: false, text: "Hello! 👋", time: "08:53 AM" },
+  //   { id: 2, fromMe: true, text: "Hi! How are you?", time: "08:54 AM" },
+  //   { id: 3, fromMe: false, text: "I'm good, thanks!", time: "08:55 AM" },
+  //   { id: 4, fromMe: true, text: "What about you?", time: "08:56 AM" },
+  //   {
+  //     id: 5,
+  //     fromMe: false,
+  //     text: "Doing well! Just working on some projects.",
+  //     time: "08:57 AM",
+  //   },
+  //   {
+  //     id: 6,
+  //     fromMe: true,
+  //     text: "Sounds great! Let me know if you need help.",
+  //     time: "08:58 AM",
+  //   },
+  //   { id: 7, fromMe: false, text: "Will do! Thanks!", time: "08:59 AM" },
+  //   { id: 8, fromMe: true, text: "Anytime! 😊", time: "09:00 AM" },
+  //   { id: 9, fromMe: false, text: "Catch you later!", time: "09:01 AM" },
+  //   { id: 10, fromMe: true, text: "Bye! Take care.", time: "09:02 AM" },
+  //   { id: 11, fromMe: false, text: "You too! Bye!", time: "09:03 AM" },
+  //   { id: 12, fromMe: true, text: "See you soon!", time: "09:04 AM" },
+  // ];
 
   return (
     <div className="grid grid-rows-[1fr_auto] bg-white rounded-lg shadow-md overflow-hidden">
@@ -56,6 +66,7 @@ function Chat() {
             </button>
           </div>
         </div>
+        <div>your chat id is {chatId}</div>
         {/* Messages */}
         <div className=" grid overflow-y-auto h-[calc(100vh-200px)] p-4">
           {messages.map((msg) => (
