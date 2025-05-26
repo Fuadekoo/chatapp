@@ -17,6 +17,8 @@ export async function getUserChat(userAId: string) {
     select: {
       id: true,
       msg: true,
+      fromUserId: true,
+      toUserId: true,
       createdAt: true,
       updatedAt: true,
       post: {
@@ -27,7 +29,12 @@ export async function getUserChat(userAId: string) {
       },
     },
   });
-  return chat;
+  // when my userBId is found in fromuserid then add a self and true and false the other using a map
+  const chats = chat.map((c) => ({
+    ...c,
+    self: c.fromUserId === userBId,
+  }));
+  return chats;
 }
 
 export async function getGroupChat(groupId: string) {

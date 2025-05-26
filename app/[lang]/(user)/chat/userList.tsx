@@ -4,7 +4,7 @@ import useAction from "@/hooks/useAction";
 import { getUserList } from "@/action/chat/chatuser";
 
 type UserListProps = {
-  onSelectChat?: (chatId: string) => void;
+  onSelectChat?: (chatId: string, type: "user") => void;
 };
 
 function UserList({ onSelectChat }: UserListProps) {
@@ -32,7 +32,7 @@ function UserList({ onSelectChat }: UserListProps) {
           data.map((chat) => (
             <div
               key={chat.id}
-              onClick={() => onSelectChat && onSelectChat(chat.id)}
+              onClick={() => onSelectChat && onSelectChat(chat.id, "user")}
               className="p-3 border-b flex justify-between items-center cursor-pointer hover:bg-gray-200 rounded"
             >
               <div>

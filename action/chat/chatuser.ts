@@ -1,11 +1,15 @@
 "use server";
 import prisma from "@/lib/db";
+import { getLoginUserId } from "@/action/user/loginuser";
 
 export async function getUserList(search?: string) {
+  const loginUser = await getLoginUserId();
+  const loginuserId = loginUser?.id;
+
   const userList = await prisma.user.findMany({
     where: {
       id: {
-        not: "001",
+        not: loginuserId,
       },
       ...(search
         ? {

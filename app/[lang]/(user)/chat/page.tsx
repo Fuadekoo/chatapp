@@ -7,8 +7,15 @@ import Profile from "./profile";
 import Drawer from "@/components/drawer";
 
 function Page() {
-  const [selectedChat, setSelectedChat] = useState<string | null>("null");
+  const [selectedChat, setSelectedChat] = useState<string>();
+  const [selectedType, setSelectedType] = useState<"user" | "group">("user");
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
+
+  const handleSelectChat = (chatId: string, type: "user" | "group") => {
+    setSelectedChat(chatId);
+    setSelectedType(type);
+  };
+
   return (
     <div className="overflow-hidden h-screen">
       <nav className="overflow-hidden flex-shrink-0">
@@ -28,7 +35,7 @@ function Page() {
               selectedChat ? "hidden" : "block"
             } md:block h-full overflow-y-auto`}
           >
-            <ChatList onSelectChat={setSelectedChat} />
+            <ChatList onSelectChat={handleSelectChat} />
           </div>
           <div
             className={`${
@@ -44,7 +51,7 @@ function Page() {
                 &larr; Back to chats
               </button>
             </div> */}
-            <Chat chatId={selectedChat} />
+            <Chat chatId={selectedChat} type={selectedType} />
           </div>
         </div>
       </main>

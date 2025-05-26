@@ -4,7 +4,7 @@ import useAction from "@/hooks/useAction";
 import { getGroupList } from "@/action/chat/chatgroup";
 
 type groupListProps = {
-  onSelectChat?: (chatId: string) => void;
+  onSelectChat?: (chatId: string, type: "group") => void;
 };
 
 function GroupList({ onSelectChat }: groupListProps) {
@@ -33,7 +33,7 @@ function GroupList({ onSelectChat }: groupListProps) {
           data.map((group) => (
             <div
               key={group.id}
-              onClick={() => onSelectChat && onSelectChat(group.id)}
+              onClick={() => onSelectChat && onSelectChat(group.id, "group")}
               className="p-3 border-b flex justify-between items-center cursor-pointer hover:bg-gray-200 rounded"
             >
               <div>
