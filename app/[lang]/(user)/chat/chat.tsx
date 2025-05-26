@@ -2,16 +2,23 @@ import Image from "next/image";
 import ChatWriteCard from "./chatWriteCard";
 import React, { useState } from "react";
 import useAction from "@/hooks/useAction";
-import { getChatMessages } from "@/action/chat/chatmessage";  
-
+import { getGroupChat } from "@/action/chat/chat";
+import { getUserChat } from "@/action/chat/chat";
+// import { getChatMessages } from "@/action/chat/chatmessage";
 
 type ChatProps = {
   chatId: string | null;
 };
 
 function Chat({ chatId }: ChatProps) {
+  // Use action to fetch chat messages based on chatId  came from it came from group or feom individual
+  const [data, action, loading] = useAction(
+    chatId ? getUserChat : getGroupChat,
+    [true, () => {}],
+    chatId
+  );
   const [messages, setMessages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   // // Example messages (replace with your messages state/props)
   // const messages = [
@@ -90,6 +97,7 @@ function Chat({ chatId }: ChatProps) {
           ))}
         </div>
       </div>
+
       {/* Input */}
       <div className="overflow-hidden p-0">
         <ChatWriteCard />
