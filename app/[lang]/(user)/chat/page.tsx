@@ -7,10 +7,16 @@ import Profile from "./profile";
 import Drawer from "@/components/drawer";
 
 function Page() {
-  const [selectedChat, setSelectedChat] = useState<string>();
+  const [selectedChat, setSelectedChat] = useState<string | undefined>();
   const [selectedType, setSelectedType] = useState<"user" | "group">("user");
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
 
+  // Correct ChatListProps type
+  type ChatListProps = {
+    onSelectChat?: (chatId: string, type: "user" | "group") => void;
+  };
+
+  // Handler receives both chatId and type
   const handleSelectChat = (chatId: string, type: "user" | "group") => {
     setSelectedChat(chatId);
     setSelectedType(type);
@@ -21,7 +27,6 @@ function Page() {
       <nav className="overflow-hidden flex-shrink-0">
         <ChatNavbar onProfileClick={() => setOpenProfileDrawer(true)} />
       </nav>
-      {/* ...rest of your layout... */}
       <Drawer
         open={openProfileDrawer}
         onClose={() => setOpenProfileDrawer(false)}
@@ -35,6 +40,7 @@ function Page() {
               selectedChat ? "hidden" : "block"
             } md:block h-full overflow-y-auto`}
           >
+            {/* Pass the handler to ChatList */}
             <ChatList onSelectChat={handleSelectChat} />
           </div>
           <div
@@ -42,16 +48,13 @@ function Page() {
               selectedChat ? "block" : "hidden"
             } md:block h-full overflow-y-auto`}
           >
-            {/* Show back button on mobile */}
-            {/* <div className="md:hidden mb-2">
-              <button
-                className="text-blue-500 underline"
-                onClick={() => setSelectedChat(null)}
-              >
-                &larr; Back to chats
-              </button>
-            </div> */}
-            <Chat chatId={selectedChat} type={selectedType} />
+            {selectedChat && (
+              <Chat
+                chatId={selectedChat}
+                type={selectedType}
+                // currentUserId={"yourCurrentUserId"} // Replace with actual user id
+              />
+            )}
           </div>
         </div>
       </main>

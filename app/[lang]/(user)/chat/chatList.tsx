@@ -4,7 +4,7 @@ import UserList from "./userList";
 import GroupList from "./groupList";
 
 type ChatListProps = {
-  onSelectChat?: (chatId: string) => void;
+  onSelectChat?: (chatId: string, type: "user" | "group") => void;
 };
 
 function ChatList({ onSelectChat }: ChatListProps) {
