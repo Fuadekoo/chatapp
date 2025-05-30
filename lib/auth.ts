@@ -16,19 +16,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!result.success) {
           throw new Error("Invalid credentials");
         }
-        // Implement your own logic to find the user
+        // Find user by phone and password
         const user = await prisma.user.findUnique({
           where: {
             phone: result.data.phone,
             password: result.data.password,
           },
         });
+
         if (!user) {
-          console.log("Invalid credentials");
           throw new Error("Invalid credentials");
         }
-        return user;
+        // Only return id, phone, and email for session
+        return {
+          id: user.id,
+          phone: user.phone,
+          email: user.email,
+        };
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        // token.phone = user.;
+        token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id as string;
+      // session.user.phone = token.phone;
+      session.user.email = token.email ?? "";
+      return session;
+    },
+  },
 });

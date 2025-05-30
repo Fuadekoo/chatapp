@@ -10,8 +10,12 @@ export async function authenticate(
 ): Promise<string | undefined> {
   if (!data) return undefined;
   try {
-    await signIn("credentials", { ...data, redirect: false });
-
+    const result = await signIn("credentials", { ...data, redirect: false });
+    if (result && result.error) {
+      // Invalid credentials or other error
+      console.log("sign in failed", result.error);
+      return "Invalid email or password";
+    }
     console.log("sign in successfully");
   } catch (error) {
     console.log("sign in failed", error);

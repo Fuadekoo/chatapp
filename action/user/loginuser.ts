@@ -18,5 +18,6 @@ export async function getLoginUserId() {
     },
   });
 
+  console.log("login students :", loginUser);
   return loginUser;
 }
