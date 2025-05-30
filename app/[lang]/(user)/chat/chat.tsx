@@ -75,7 +75,7 @@ function Chat({ chatId, type }: ChatProps) {
     setSocket(newSocket);
 
     // Handle incoming direct messages
-    newSocket.on("msg", (newMsg: ChatMessage) => {
+    const handleMsg = (newMsg: ChatMessage) => {
       if (
         type === "user" &&
         ((newMsg.fromUserId === chatId && newMsg.toUserId === currentUserId) ||
@@ -86,19 +86,24 @@ function Chat({ chatId, type }: ChatProps) {
           { ...newMsg, self: newMsg.fromUserId === currentUserId },
         ]);
       }
-    });
+    };
 
     // Handle incoming group messages
-    newSocket.on("group:msg", (newMsg: GroupChatMessage) => {
+    const handleGroupMsg = (newMsg: GroupChatMessage) => {
       if (type === "group" && newMsg.groupId === chatId) {
         setMessages((prev) => [
           ...prev,
           { ...newMsg, self: newMsg.senderId === currentUserId },
         ]);
       }
-    });
+    };
+
+    newSocket.on("msg", handleMsg);
+    newSocket.on("group:msg", handleGroupMsg);
 
     return () => {
+      newSocket.off("msg", handleMsg);
+      newSocket.off("group:msg", handleGroupMsg);
       newSocket.disconnect();
     };
   }, [currentUserId, chatId, type]);
@@ -127,16 +132,41 @@ function Chat({ chatId, type }: ChatProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Optimistically add message to UI and emit to server
   const handleSendMessage = (message: string) => {
     if (!socket || !message.trim() || !currentUserId) return;
 
+    const now = new Date();
     if (type === "user") {
+      // Optimistic update
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Math.random().toString(36).slice(2), // temp id
+          fromUserId: currentUserId,
+          toUserId: chatId,
+          msg: message,
+          createdAt: now,
+          self: true,
+        },
+      ]);
       socket.emit("msg", {
-        id: chatId, // recipient ID
+        id: chatId,
         msg: message,
         fromUserId: currentUserId,
       });
     } else {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Math.random().toString(36).slice(2),
+          groupId: chatId,
+          senderId: currentUserId,
+          msg: message,
+          createdAt: now,
+          self: true,
+        },
+      ]);
       socket.emit("group:msg", {
         groupId: chatId,
         msg: message,
@@ -150,9 +180,9 @@ function Chat({ chatId, type }: ChatProps) {
   return (
     <div className="h-full flex flex-col bg-white rounded-lg shadow-md overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b bg-blue-50">
-        <div className="flex items-center gap-3">
-          <button className="md:hidden text-blue-500 text-xl font-bold px-2">
+      <div className="flex items-center justify-between px-4 py-3 border-b bg-blue-50 overflow-hidden">
+        <div className="flex items-center gap-3 overflow-hidden">
+          <button className="md:hidden text-blue-500 text-xl font-bold px-2 overflow-hidden">
             &lt;
           </button>
           <Image
@@ -217,7 +247,7 @@ function Chat({ chatId, type }: ChatProps) {
       </div>
 
       {/* Input */}
-      <div className="border-t bg-white px-4 py-3">
+      <div className="border-t bg-white px-4 py-3 overflow-hidden">
         <ChatWriteCard onSendMessage={handleSendMessage} />
       </div>
     </div>

@@ -27,7 +27,6 @@ app.prepare().then(async () => {
 
   const httpServer = createServer(expressApp);
 
-  // socket(httpServer);
   const io = new Server(httpServer, { pingTimeout: 60000 });
 
   io.use(async (socket, next) => {
@@ -45,27 +44,38 @@ app.prepare().then(async () => {
       });
     }
 
-    //one to one chat
+    // One-to-one chat
     socket.on("msg", async ({ id, msg }: { id: string; msg: string }) => {
-      console.log("MSG >> ", socket.data.id);
+      console.log("MSG >> ", socket.data.id, "to", id);
       const user = await prisma.user.findFirst({
         where: { id },
         select: { id: true, socket: true },
       });
-      if (socket.data.id) {
-        if (user) {
-          const chat = await prisma.chat.create({
-            data: { fromUserId: socket.data.id, toUserId: user.id, msg },
+      if (socket.data.id && user) {
+        const chat = await prisma.chat.create({
+          data: { fromUserId: socket.data.id, toUserId: user.id, msg },
+        });
+
+        // Emit to receiver
+        if (user.socket) {
+          io.to(user.socket).emit("msg", {
+            id: chat.id,
+            fromUserId: socket.data.id,
+            toUserId: user.id,
+            msg: chat.msg,
+            createdAt: chat.createdAt,
+            self: false,
           });
-          if (user.socket) {
-            socket.to(user.socket).emit("msg", {
-              id: chat.id,
-              createdAt: chat.createdAt,
-              msg: chat.msg,
-              self: false,
-            });
-          }
         }
+        // (Optional) Emit to sender for confirmation (self: true)
+        // socket.emit("msg", {
+        //   id: chat.id,
+        //   fromUserId: socket.data.id,
+        //   toUserId: user.id,
+        //   msg: chat.msg,
+        //   createdAt: chat.createdAt,
+        //   self: true,
+        // });
       }
     });
 
@@ -95,7 +105,7 @@ app.prepare().then(async () => {
 
         sockets.forEach((sockId) => {
           if (sockId) {
-            socket.to(sockId).emit("group:msg", {
+            io.to(sockId).emit("group:msg", {
               id: groupMsg.id,
               groupId,
               msg: groupMsg.msg,
@@ -104,6 +114,15 @@ app.prepare().then(async () => {
             });
           }
         });
+
+        // (Optional) Emit to sender for confirmation (self: true)
+        // socket.emit("group:msg", {
+        //   id: groupMsg.id,
+        //   groupId,
+        //   msg: groupMsg.msg,
+        //   senderId: socket.data.id,
+        //   createdAt: groupMsg.createdAt,
+        // });
       }
     );
 
