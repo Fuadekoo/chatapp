@@ -24,7 +24,7 @@ function Page() {
 
   return (
     <div className="overflow-hidden h-screen">
-      <nav className="overflow-hidden flex-shrink-0">
+      <nav className=" sticky overflow-hidden flex-shrink-0">
         <ChatNavbar onProfileClick={() => setOpenProfileDrawer(true)} />
       </nav>
       <Drawer
@@ -34,7 +34,7 @@ function Page() {
         <Profile />
       </Drawer>
       <main className="flex-1 overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4 h-full overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-[400px_1fr] gap-0 h-full overflow-hidden">
           <div
             className={`${
               selectedChat ? "hidden" : "block"
