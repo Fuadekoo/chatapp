@@ -109,9 +109,8 @@ function Chat({ chatId, type }: ChatProps) {
         }))
       );
     } else if (type === "group" && groupData) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setMessages(
-        (groupData as any[]).map((msg) => ({
+        groupData.map((msg) => ({
           id: msg.id,
           groupId: msg.groupChat?.id,
           senderId: msg.sender?.id,

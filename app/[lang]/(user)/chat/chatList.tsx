@@ -4,8 +4,8 @@ import UserList from "./userList";
 import GroupList from "./groupList";
 import NewChat from "./newChat";
 import NewGroup from "./newGroup";
-import useAction from "@/hooks/useAction";
-import { getLoginUserId } from "@/action/user/loginuser";
+// import useAction from "@/hooks/useAction";
+// import { getLoginUserId } from "@/action/user/loginuser";
 
 type ChatListProps = {
   onSelectChat?: (chatId: string, type: "user" | "group") => void;
