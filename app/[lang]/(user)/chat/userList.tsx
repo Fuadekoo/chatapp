@@ -9,7 +9,7 @@ type UserListProps = {
 
 function UserList({ onSelectChat }: UserListProps) {
   const [search, setSearch] = React.useState("");
-  const [data, action, loading] = useAction(
+  const [data, , loading] = useAction(
     getUserList,
     [true, () => {}],
     search

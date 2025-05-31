@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,7 +11,7 @@ type NewChatProps = {
 };
 
 function NewChat({ onFinish }: NewChatProps) {
-  const [findUser, action, isLoading] = useAction(FindUser, [
+  const [, action, isLoading] = useAction(FindUser, [
     ,
     (data) => {
       if (data) {
@@ -22,7 +22,7 @@ function NewChat({ onFinish }: NewChatProps) {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: {},
   } = useForm({
     resolver: zodResolver(
       z.object({
@@ -50,6 +50,7 @@ function NewChat({ onFinish }: NewChatProps) {
         />
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
         >
           find person

@@ -12,8 +12,8 @@ type ChatListProps = {
 };
 
 function ChatList({ onSelectChat }: ChatListProps) {
-  const [data, action, loading] = useAction(getLoginUserId, [true, () => {}]);
-  const currentUserId = data?.id;
+  // const [data, action, loading] = useAction(getLoginUserId, [true, () => {}]);
+  // const currentUserId = data?.id;
   const [activeTab, setActiveTab] = useState<"user" | "group">("user");
   const [showDropdown, setShowDropdown] = useState(false);
   const handleTabChange = (tab: "user" | "group") => {

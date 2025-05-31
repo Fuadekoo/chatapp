@@ -40,26 +40,17 @@ function Chat({ chatId, type }: ChatProps) {
     []
   );
 
-  // Fetch initial messages
-  let userData, userLoading, groupData, groupLoading;
-
-  if (type === "user") {
-    [userData, , userLoading] = useAction(
-      getUserChat,
-      [true, () => {}],
-      chatId
-    );
-    groupData = undefined;
-    groupLoading = false;
-  } else {
-    [groupData, , groupLoading] = useAction(
-      getGroupChat,
-      [true, () => {}],
-      chatId
-    );
-    userData = undefined;
-    userLoading = false;
-  }
+  // Always call both hooks, don't call them conditionally!
+  const [userData, , userLoading] = useAction(
+    getUserChat,
+    [true, () => {}],
+    chatId
+  );
+  const [groupData, , groupLoading] = useAction(
+    getGroupChat,
+    [true, () => {}],
+    chatId
+  );
 
   // Initialize socket connection
   useEffect(() => {
@@ -112,17 +103,21 @@ function Chat({ chatId, type }: ChatProps) {
   useEffect(() => {
     if (type === "user" && userData) {
       setMessages(
-        userData.map((msg) => ({
+        (userData as ChatMessage[]).map((msg) => ({
           ...msg,
           self: msg.fromUserId === currentUserId,
         }))
       );
     } else if (type === "group" && groupData) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setMessages(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        groupData.map((msg: any) => ({
-          ...msg,
-          self: msg.senderId === currentUserId,
+        (groupData as any[]).map((msg) => ({
+          id: msg.id,
+          groupId: msg.groupChat?.id,
+          senderId: msg.sender?.id,
+          msg: msg.msg,
+          createdAt: msg.createdAt,
+          self: msg.sender?.id === currentUserId,
         }))
       );
     }
@@ -139,7 +134,6 @@ function Chat({ chatId, type }: ChatProps) {
 
     const now = new Date();
     if (type === "user") {
-      // Optimistic update
       setMessages((prev) => [
         ...prev,
         {

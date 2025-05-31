@@ -12,9 +12,9 @@ function Page() {
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
 
   // Correct ChatListProps type
-  type ChatListProps = {
-    onSelectChat?: (chatId: string, type: "user" | "group") => void;
-  };
+  // type ChatListProps = {
+  //   onSelectChat?: (chatId: string, type: "user" | "group") => void;
+  // };
 
   // Handler receives both chatId and type
   const handleSelectChat = (chatId: string, type: "user" | "group") => {

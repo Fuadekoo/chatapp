@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import useAction from "@/hooks/useAction";
 import { createGroup } from "@/action/chat/chatgroup";
 import { useForm } from "react-hook-form";
 import { createGroupSchema } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 type NewGroupProps = {
   onFinish: () => void;
 };
 
 function NewGroup({ onFinish }: NewGroupProps) {
-  const [groupCreate, action, isloadingcreate] = useAction(createGroup, [
+  const [, action, isloadingcreate] = useAction(createGroup, [
     ,
     () => {
       onFinish();
@@ -20,7 +19,7 @@ function NewGroup({ onFinish }: NewGroupProps) {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: {},
   } = useForm({
     resolver: zodResolver(createGroupSchema),
   });

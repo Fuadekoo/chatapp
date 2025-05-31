@@ -9,11 +9,7 @@ type groupListProps = {
 
 function GroupList({ onSelectChat }: groupListProps) {
   const [search, setSearch] = React.useState("");
-  const [data, action, loading] = useAction(
-    getGroupList,
-    [true, () => {}],
-    search
-  );
+  const [data, , loading] = useAction(getGroupList, [true, () => {}], search);
 
   return (
     <div className="overflow-hidden">
