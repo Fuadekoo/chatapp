@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useAction from "@/hooks/useAction";
 import { authenticate } from "@/action/common/authentication";
-import Image from "next/image";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/react";
 
@@ -18,15 +17,11 @@ function LoginPage() {
   } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
-  const [data, action, loading] = useAction(authenticate, [
+  const [, action, loading] = useAction(authenticate, [
     ,
     (data) => console.log(data),
   ]);
 
-  const onSubmit = (data: z.infer<typeof loginSchema>) => {
-    // handle login logic here
-    console.log("Form submitted", data);
-  };
 
   return (
     <div className="">
@@ -43,7 +38,12 @@ function LoginPage() {
             <p style={{ color: "red" }}>{errors.password.message}</p>
           )}
           <br />
-          <Button color="secondary" variant="bordered" type="submit">
+          <Button
+            isDisabled={loading}
+            color="secondary"
+            variant="bordered"
+            type="submit"
+          >
             Login
           </Button>
         </form>

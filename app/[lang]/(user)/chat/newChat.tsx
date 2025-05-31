@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useAction from "@/hooks/useAction";
 import { FindUser } from "@/action/chat/chatuser";
+import { Input } from "@heroui/react";
 
 type NewChatProps = {
   onFinish: () => void;
@@ -40,11 +41,11 @@ function NewChat({ onFinish }: NewChatProps) {
         onSubmit={handleSubmit((data) => action(data.phone))}
         className="w-full max-w-xs"
       >
-        <input
+        <label htmlFor="">enter phone number</label>
+        <Input
           type="text"
           {...register("phone")}
           placeholder="Enter user phone"
-          className="w-full border rounded px-3 py-2 mb-4"
           required
         />
         <button

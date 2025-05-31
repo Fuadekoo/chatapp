@@ -112,13 +112,14 @@ function Chat({ chatId, type }: ChatProps) {
   useEffect(() => {
     if (type === "user" && userData) {
       setMessages(
-        userData.map((msg: any) => ({
+        userData.map((msg) => ({
           ...msg,
           self: msg.fromUserId === currentUserId,
         }))
       );
     } else if (type === "group" && groupData) {
       setMessages(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         groupData.map((msg: any) => ({
           ...msg,
           self: msg.senderId === currentUserId,
