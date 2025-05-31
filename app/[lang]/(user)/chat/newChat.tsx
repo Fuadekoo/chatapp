@@ -36,7 +36,10 @@ function NewChat({ onFinish }: NewChatProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[300px]">
       <h2 className="text-xl font-bold mb-4">Start New Chat</h2>
-      <form onSubmit={handleSubmit(action)} className="w-full max-w-xs">
+      <form
+        onSubmit={handleSubmit((data) => action(data.phone))}
+        className="w-full max-w-xs"
+      >
         <input
           type="text"
           {...register("phone")}
