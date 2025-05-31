@@ -145,7 +145,6 @@ function ChatList({ onSelectChat }: ChatListProps) {
         {popupType === "group" && (
           <NewGroup
           onFinish={handleFinish}
-          createdById={currentUserId ?? ""}
           />
         )}
         </div>

@@ -12,6 +12,7 @@ export async function getUserChat(userAId: string) {
         { fromUserId: userAId, toUserId: userBId },
         { fromUserId: userBId, toUserId: userAId },
       ],
+      // msg:{}
     },
     orderBy: { createdAt: "asc" },
     select: {

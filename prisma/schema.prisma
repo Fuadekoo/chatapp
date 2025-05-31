@@ -27,6 +27,8 @@ model user {
   createdGroups     groupChat[]        @relation("CreatedGroups")
   groupChats        groupChat[]        @relation("GroupMembers")
   groupChatMessages groupChatMessage[] @relation("sentToGroup")
+  blockedUsers      blockedUser[]      @relation("Blocker")
+  blockedBy         blockedUser[]      @relation("Blocked")
 }
 
 model post {
@@ -50,6 +52,16 @@ model chat {
   postId     String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model blockedUser{
+  id        String @id @default(cuid())
+  userId   String
+  blockedUserId String
+  user           user     @relation("Blocker", fields: [userId], references: [id])
+  blockedUser    user     @relation("Blocked", fields: [blockedUserId], references: [id])
+  createdAt DateTime @default(now())
+  @@unique([userId, blockedUserId])
 }
 
 model groupChat {
