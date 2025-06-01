@@ -11,6 +11,7 @@
   "dependencies": {
     "@heroui/button": "^2.2.19",
     "@heroui/input": "^2.4.19",
+    "@heroui/progress": "^2.2.16",
     "@heroui/react": "^2.8.0-beta.6",
     "@hookform/resolvers": "^5.0.1",
     "@prisma/client": "^6.8.2",
