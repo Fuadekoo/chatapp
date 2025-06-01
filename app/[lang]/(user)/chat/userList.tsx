@@ -2,6 +2,7 @@
 import React from "react";
 import useAction from "@/hooks/useAction";
 import { getUserList } from "@/action/chat/chatuser";
+import Loading from "@/components/loading";
 
 type UserListProps = {
   onSelectChat?: (chatId: string, type: "user") => void;
@@ -9,11 +10,7 @@ type UserListProps = {
 
 function UserList({ onSelectChat }: UserListProps) {
   const [search, setSearch] = React.useState("");
-  const [data, , loading] = useAction(
-    getUserList,
-    [true, () => {}],
-    search
-  );
+  const [data, , loading] = useAction(getUserList, [true, () => {}], search);
   return (
     <div className="overflow-hidden">
       {/* Search Box */}
@@ -27,7 +24,9 @@ function UserList({ onSelectChat }: UserListProps) {
       {/* User List */}
       <div className="overflow-y-auto">
         {loading || data === undefined ? (
-          <div className="p-3 text-center text-gray-500">Loading...</div>
+          <div className="p-3 mt-10 text-center">
+            <Loading />
+          </div>
         ) : (
           data.map((chat) => (
             <div

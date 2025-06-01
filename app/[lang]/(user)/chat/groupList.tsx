@@ -2,6 +2,7 @@
 import React from "react";
 import useAction from "@/hooks/useAction";
 import { getGroupList } from "@/action/chat/chatgroup";
+import Loading from "@/components/loading";
 
 type groupListProps = {
   onSelectChat?: (chatId: string, type: "group") => void;
@@ -24,7 +25,9 @@ function GroupList({ onSelectChat }: groupListProps) {
       {/* Group List */}
       <div className="overflow-y-auto">
         {loading || data === undefined ? (
-          <div className="p-3 text-center text-gray-500">Loading...</div>
+          <div className="p-3 mt-10 text-center">
+            <Loading />
+          </div>
         ) : (
           data.map((group) => (
             <div

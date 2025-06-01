@@ -1,7 +1,30 @@
 import Image from "next/image";
 import React from "react";
+import useAction from "@/hooks/useAction";
+import { logout } from "@/action/common/authentication";
+import { getLoginUserId } from "@/action/user/loginuser";
+import { Button } from "@heroui/react";
+import { addToast } from "@heroui/toast";
+import { Form } from "react-hook-form";
 
 function Profile() {
+  const [response, action, isLoading] = useAction(logout, [
+    ,
+    (response) => {
+      if (response) {
+        addToast({
+          title: "Logout",
+          description: response.message,
+        });
+      } else {
+        addToast({
+          title: "Logout",
+          description: "Logout successful!",
+        });
+      }
+    },
+  ]);
+
   return (
     <div className="grid grid-rows-[1fr_auto] overflow-hidden">
       <div className="items-center justify-center flex flex-col gap-4 p-4">
@@ -26,7 +49,11 @@ function Profile() {
             <strong>Email:</strong> email@example.com
           </li>
         </ul>
-        <button className="mt-4 p-4">Logout</button>
+        <Form onSubmit={action} className="flex flex-col gap-2">
+          <Button type="submit" disabled={isLoading}>
+            Logout
+          </Button>
+        </Form>
       </div>
     </div>
   );
