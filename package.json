@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/alert": "^2.2.20",
     "@heroui/button": "^2.2.19",
     "@heroui/input": "^2.4.19",
     "@heroui/progress": "^2.2.16",
     "@heroui/react": "^2.8.0-beta.6",
+    "@heroui/toast": "^2.0.10",
     "@hookform/resolvers": "^5.0.1",
     "@prisma/client": "^6.8.2",
     "express": "^4.21.2",

@@ -8,6 +8,7 @@ import { z } from "zod";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/react";
 import { Progress } from "@heroui/react";
+import { Alert } from "@heroui/react";
 
 function SignupPage() {
   const [step, setStep] = useState(1);
@@ -38,9 +39,9 @@ function SignupPage() {
 
   return (
     <div className="">
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-3">
         <Progress value={(step / totalSteps) * 100} color="success" />
-        <h1 className="text-green-500">Welcome to ChattingApp</h1>
+        {/* <h1 className="text-green-500">Welcome to ChattingApp</h1> */}
         <form
           onSubmit={handleSubmit(action)}
           className="flex flex-col gap-2"
@@ -60,6 +61,7 @@ function SignupPage() {
                 type="button"
                 color="secondary"
                 variant="bordered"
+                className="mt-2"
                 onClick={handleNext}
               >
                 Next
