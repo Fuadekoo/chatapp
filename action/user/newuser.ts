@@ -7,12 +7,13 @@ export async function newUser(data: z.infer<typeof signupSchema>) {
   try {
     const parsed = signupSchema.safeParse(data);
     if (!parsed.success) {
-      throw new Error("Invalid input");
+     return {
+        message: "Validation failed",}
     }
 
     //   check the password and confirm password is similar
     if (parsed.data.password !== parsed.data.confirmPassword) {
-      throw new Error("Passwords do not match");
+      return { message: "Password and confirm password do not match" };
     }
 
     await prisma.user.create({
@@ -26,6 +27,9 @@ export async function newUser(data: z.infer<typeof signupSchema>) {
     return { message: "User created successfully" };
   } catch (error) {
     console.error(error);
-    throw new Error("Failed to create user");
+    return {
+      message: "Error creating user",
+    //   error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 }

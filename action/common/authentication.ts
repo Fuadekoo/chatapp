@@ -24,3 +24,14 @@ export async function authenticate(
 
   redirect("/en/chat");
 }
+
+export async function logout() {
+  try {
+    await signOut({ redirect: false });
+    redirect("/en/guest/login");
+    return { message: "Logout successful" };
+  } catch (error) {
+    console.error("Logout failed:", error);
+    return { message: "Logout failed" };
+  }
+}

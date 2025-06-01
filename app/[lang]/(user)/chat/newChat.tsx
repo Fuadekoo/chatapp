@@ -4,18 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useAction from "@/hooks/useAction";
 import { FindUser } from "@/action/chat/chatuser";
-import { Input } from "@heroui/react";
+import { Input, Button } from "@heroui/react";
 
 type NewChatProps = {
   onFinish: () => void;
+  onSelectChat?: (chatId: string, type: "user") => void;
 };
 
-function NewChat({ onFinish }: NewChatProps) {
-  const [, action, isLoading] = useAction(FindUser, [
+function NewChat({ onFinish, onSelectChat }: NewChatProps) {
+  const [response, action, isLoading] = useAction(FindUser, [
     ,
     (data) => {
       if (data) {
-        onFinish();
+        // onFinish();
       }
     },
   ]);
@@ -35,27 +36,46 @@ function NewChat({ onFinish }: NewChatProps) {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[300px]">
-      <h2 className="text-xl font-bold mb-4">Start New Chat</h2>
-      <form
-        onSubmit={handleSubmit((data) => action(data.phone))}
-        className="w-full max-w-xs"
-      >
-        <label htmlFor="">enter phone number</label>
-        <Input
-          type="text"
-          {...register("phone")}
-          placeholder="Enter user phone"
-          required
-        />
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+    <div className="flex flex-col items-center justify-center min-h-[100px]">
+      <div>
+        <h2 className="text-xl font-bold mb-4">Start New Chat</h2>
+        <form
+          onSubmit={handleSubmit((data) => action(data.phone))}
+          className="w-full max-w-xs"
         >
-          find person
-        </button>
-      </form>
+          <label htmlFor="">enter phone number</label>
+          <Input
+            type="text"
+            {...register("phone")}
+            placeholder="Enter user phone"
+            required
+          />
+          <Button type="submit" disabled={isLoading}>
+            find person
+          </Button>
+        </form>
+      </div>
+      <div>
+        <p className="text-sm text-gray-500 mt-2">Person</p>
+        {response ? (
+          <div className="mt-2 text-green-600 text-sm">
+            <button
+              className="mt-2 text-blue-600 text-sm underline"
+              onClick={() => {
+                onSelectChat && onSelectChat(response.id, "user");
+                onFinish();
+              }}
+            >
+              {response.name} ({response.phone})
+            </button>
+            {/* {typeof response === "string"
+              ? response
+              : JSON.stringify(response)} */}
+          </div>
+        ) : (
+          <div className="mt-2 text-red-600 text-sm">No user found</div>
+        )}
+      </div>
     </div>
   );
 }

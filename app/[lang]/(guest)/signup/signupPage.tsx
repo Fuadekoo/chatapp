@@ -5,11 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signupSchema } from "@/lib/zodSchema";
 import { z } from "zod";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/react";
-import { Progress } from "@heroui/react";
-import { Alert } from "@heroui/react";
-
+import { Input } from "@heroui/react";
+import Loading from "@/components/loading";
+import { addToast, Button, Progress } from "@heroui/react";
 function SignupPage() {
   const [step, setStep] = useState(1);
   const totalSteps = 2;
@@ -19,13 +17,29 @@ function SignupPage() {
     register,
     formState: { errors },
     trigger,
-    getValues,
+    reset,
   } = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     mode: "onTouched",
   });
 
-  const [, action, loading] = useAction(newUser, [, () => {}]);
+  const [response, action, isLoading] = useAction(newUser, [
+    ,
+    (response) => {
+      addToast({
+        title: "Signup",
+        description: response.message,
+      });
+    }
+    
+  ]);
+  console.log("Response from action:", response);
+  // Reset form after successful signup
+  // if (response?.message) {
+  //   reset();
+  //   // redirect tologin components after successful signup
+  //   setStep(1);
+  // }
 
   // Handle next step with validation
   const handleNext = async () => {
@@ -97,18 +111,18 @@ function SignupPage() {
                 <Button
                   type="button"
                   color="default"
-                  variant="bordered"
+                  variant="flat"
                   onClick={handleBack}
                 >
                   Back
                 </Button>
                 <Button
-                  isDisabled={loading}
+                  isDisabled={isLoading}
                   color="secondary"
-                  variant="bordered"
+                  variant="flat"
                   type="submit"
                 >
-                  Signup
+                  {isLoading ? <Loading size={20} /> : "Signup"}
                 </Button>
               </div>
             </>
