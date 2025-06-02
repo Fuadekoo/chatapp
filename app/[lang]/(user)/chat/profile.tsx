@@ -68,7 +68,7 @@ function Profile() {
           height={100}
           className=" object-cover border"
         />
-        <Form>
+        {/* <Form>
           <Input type="file" {...register("photo")} className="w-full" />
           <Input
             type="text"
@@ -99,7 +99,7 @@ function Profile() {
           )}
           <Button>change profile</Button>
           <hr className="w-full border-t" />
-        </Form>
+        </Form> */}
       </div>
       <div className="flex flex-col justify-center p-4">
         <h1>about me</h1>
@@ -111,11 +111,11 @@ function Profile() {
             <strong>Phone:</strong> {userData?.phone}
           </li>
         </ul>
-        <form onSubmit={logoutAction} className="flex flex-col gap-2">
+        {/* <form onSubmit={logoutAction} className="flex flex-col gap-2">
           <Button type="submit" disabled={isLoggingOut}>
             {isLoggingOut ? <Loading size={40} /> : "Logout"}
           </Button>
-        </form>
+        </form> */}
       </div>
     </div>
   );

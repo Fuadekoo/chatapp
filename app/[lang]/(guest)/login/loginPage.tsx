@@ -25,8 +25,7 @@ function LoginPage() {
       if (response) {
         addToast({
           title: "Login",
-          description: response,
-          
+          description: response.message,
         });
       } else {
         addToast({
