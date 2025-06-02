@@ -4,6 +4,7 @@ CREATE TABLE `user` (
     `name` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NULL,
+    `photo` LONGTEXT NULL,
     `password` VARCHAR(191) NOT NULL,
     `socket` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -35,6 +36,17 @@ CREATE TABLE `chat` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `blockedUser` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `blockedUserId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `blockedUser_userId_blockedUserId_key`(`userId`, `blockedUserId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -82,6 +94,12 @@ ALTER TABLE `chat` ADD CONSTRAINT `chat_toUserId_fkey` FOREIGN KEY (`toUserId`) 
 
 -- AddForeignKey
 ALTER TABLE `chat` ADD CONSTRAINT `chat_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `post`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `blockedUser` ADD CONSTRAINT `blockedUser_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `blockedUser` ADD CONSTRAINT `blockedUser_blockedUserId_fkey` FOREIGN KEY (`blockedUserId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `groupChat` ADD CONSTRAINT `groupChat_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

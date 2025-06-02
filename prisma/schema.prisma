@@ -18,6 +18,7 @@ model user {
   name              String?
   phone             String             @unique
   email             String?            @unique
+  photo             String?            @db.LongText
   password          String
   socket            String?
   createdAt         DateTime           @default(now())
@@ -54,13 +55,14 @@ model chat {
   updatedAt  DateTime @updatedAt
 }
 
-model blockedUser{
-  id        String @id @default(cuid())
-  userId   String
+model blockedUser {
+  id            String   @id @default(cuid())
+  userId        String
   blockedUserId String
-  user           user     @relation("Blocker", fields: [userId], references: [id])
-  blockedUser    user     @relation("Blocked", fields: [blockedUserId], references: [id])
-  createdAt DateTime @default(now())
+  user          user     @relation("Blocker", fields: [userId], references: [id])
+  blockedUser   user     @relation("Blocked", fields: [blockedUserId], references: [id])
+  createdAt     DateTime @default(now())
+
   @@unique([userId, blockedUserId])
 }
 

@@ -17,6 +17,20 @@ export const signupSchema = z.object({
 });
 export type SignupType = z.infer<typeof signupSchema>;
 
+export const updateUserSchema = z.object({
+  name: z.string().min(2, "Name is too short"),
+  photo: z.any().optional(), // Accept any file type, validation can be handled elsewhere
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .optional(),
+  confirmPassword: z
+    .string()
+    .min(8, "Confirm password must be at least 8 characters long")
+    .optional(),
+});
+export type UpdateUserType = z.infer<typeof updateUserSchema>;
+
 export const createGroupSchema = z.object({
   groupName: z.string().min(1, "Group name is required"),
   isPublic: z.boolean(),
