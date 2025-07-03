@@ -10,7 +10,6 @@ export async function updateUserProfile(userId: string) {
         id: true,
         name: true,
         phone: true,
-        photo: true,
         password: true,
         email: true,
         createdAt: true,
@@ -27,7 +26,6 @@ export async function updateUserProfile(userId: string) {
         name: user.name, // You can update this with new data
         phone: user.phone, // You can update this with new data
         email: user.email, // You can update this with new data
-        photo: user.photo, // You can update this with new data
         password: user.password, // You can update this with new data
       },
     });
@@ -36,5 +34,19 @@ export async function updateUserProfile(userId: string) {
   } catch (error) {
     // console.error("Error fetching user profile:", error);
     return { message: "Error fetching user profile", status: false };
+  }
+}
+
+export async function updateProfilePhoto(userId: string, photo: string) {
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { photo },
+    });
+
+    return { message: "Profile photo updated successfully", status: true };
+  } catch (error) {
+    // console.error("Error updating profile photo:", error);
+    return { message: "Error updating profile photo", status: false };
   }
 }

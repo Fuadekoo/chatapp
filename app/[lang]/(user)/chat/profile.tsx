@@ -9,9 +9,10 @@ import useAction from "@/hooks/useAction";
 import { logout } from "@/action/common/authentication";
 import { getLoginUserId } from "@/action/user/loginuser";
 import { updateUserProfile } from "@/action/user/profile";
+import { updateProfilePhoto } from "@/action/user/profile";
 import { Button, Input } from "@heroui/react";
 import { addToast } from "@heroui/toast";
-import { Form } from "react-hook-form";
+// Removed incorrect Form import
 import Loading from "@/components/loading";
 
 function Profile() {
@@ -23,6 +24,8 @@ function Profile() {
     resolver: zodResolver(updateUserSchema),
     mode: "onTouched",
   });
+  // const {handlesubmit,register,}
+
   const [userData, fetchUserData, isLoadingUser] = useAction(getLoginUserId, [
     true,
     () => {},
@@ -68,8 +71,10 @@ function Profile() {
           height={100}
           className=" object-cover border"
         />
-        {/* <Form>
-          <Input type="file" {...register("photo")} className="w-full" />
+        <form
+          onSubmit={handleSubmit(updateAction)}
+          className="flex flex-col gap-2"
+        >
           <Input
             type="text"
             {...register("name")}
@@ -97,9 +102,11 @@ function Profile() {
           {errors.confirmPassword && (
             <p className="text-red-500">{errors.confirmPassword?.message}</p>
           )}
-          <Button>change profile</Button>
+          <Button type="submit" disabled={isUpdating}>
+            {isUpdating ? <Loading size={40} /> : "Change Profile"}
+          </Button>
           <hr className="w-full border-t" />
-        </Form> */}
+        </form>
       </div>
       <div className="flex flex-col justify-center p-4">
         <h1>about me</h1>
@@ -111,11 +118,11 @@ function Profile() {
             <strong>Phone:</strong> {userData?.phone}
           </li>
         </ul>
-        {/* <form onSubmit={logoutAction} className="flex flex-col gap-2">
+        <form onSubmit={logoutAction} className="flex flex-col gap-2">
           <Button type="submit" disabled={isLoggingOut}>
             {isLoggingOut ? <Loading size={40} /> : "Logout"}
           </Button>
-        </form> */}
+        </form>
       </div>
     </div>
   );

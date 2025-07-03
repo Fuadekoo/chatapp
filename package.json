@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fuadekoo/videostreamer": "^0.1.0",
     "@heroui/alert": "^2.2.20",
     "@heroui/button": "^2.2.19",
     "@heroui/input": "^2.4.19",

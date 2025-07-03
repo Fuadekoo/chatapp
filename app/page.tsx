@@ -7,8 +7,8 @@ import SignupPage from "./[lang]/(guest)/signup/signupPage";
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
   return (
-    <div className="bg-gray-300 h-screen flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg grid grid-cols-2 w-[900px] overflow-hidden">
+    <div className="bg-gray-300 h-svh max-w-svw flex items-center justify-center">
+      <div className="bg-white shadow-lg rounded-lg grid sm:grid-cols-1 md:grid-cols-2 w-[900px] overflow-hidden">
         <div className="flex flex-col gap-4 p-4 m-4">
           <h1 className="text-2xl font-bold mb-4">Welcome to ChattingApp</h1>
           <div className="flex mb-6">
@@ -35,7 +35,7 @@ export default function Home() {
           </div>
           <div>{activeTab === "login" ? <LoginPage /> : <SignupPage />}</div>
         </div>
-        <div className="bg-blue-100 flex justify-center items-center">
+        <div className="bg-blue-100 hidden md:flex justify-center items-center">
           <Image
             src="/ai.png"
             alt="Description of image"
